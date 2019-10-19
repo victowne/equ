@@ -119,11 +119,26 @@ for line in lines[n:n+nl]:
 	x.append(line[48:64])
 	x.append(line[64:80])
 x = list(filter(not_empty,x))
-q= np.array(x,dtype=float)
+q = np.array(x,dtype=float)
 #read plasma boundary
 n = n + nl
 nbdr = int(lines[n].split()[0])
 nlmt = int(lines[n].split()[1])
+n = n + 1
+nl2 = int((nbdr + nlmt)*.4 + 0.8)
+x = []
+for line in lines[n:n+nl2]:
+	x.append(line[0:16])
+	x.append(line[16:32])
+	x.append(line[32:48])
+	x.append(line[48:64])
+	x.append(line[64:80])
+x = list(filter(not_empty,x))
+pts = np.array(x,dtype=float).reshape(-1,2)
+bdr = pts[0:nbdr,0]
+bdz = pts[0:nbdr,1]
+lmr = pts[nbdr:nbdr+nlmt,0]
+lmz = pts[nbdr:nbdr+nlmt,1]
 #start_interpolation
 #dR = R[1]-R[0]
 #dZ = Z[1]-Z[0]
@@ -136,4 +151,3 @@ pin = interp1d(corp,p,kind = 'cubic')
 fin = interp1d(corp,f,kind = 'cubic')
 ff = interp1d(corp,ffprime,kind = 'cubic')
 fp = interp1d(corp,pprime,kind = 'cubic')
-qrz = qin(psi)
