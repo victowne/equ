@@ -1,9 +1,11 @@
+import numpy as np
+import matplotlib.pyplot as plt
 def f(x,y,z):
-	dxdt = -funcbz(x,y)
+	dxdt = funcbr(x,y)
 	return dxdt
 
 def g(x,y,z):
-	dydt = -funcbr(x,y)
+	dydt = funcbz(x,y)
 	return dydt
 
 def e(x,y,z):
@@ -34,15 +36,15 @@ def rk4o(x, y, z):
 
 	return [x,y,z]
 
-for i in np.arange(3.1,3.55,0.1):
+for i in np.arange(R0,R0+Rboxlen,0.1):
 	yList = []
 	xList = []
 	zList = []
 	#start point
 	x = i
-	y = 0
+	y = Z0
 	z = 0
-	h = .001
+	h = .01
 	xList.append(x)
 	yList.append(y)
 	zList.append(z)
@@ -63,7 +65,8 @@ for i in np.arange(3.1,3.55,0.1):
 
 		t += 1
 		changeInTime += h
-	plt.scatter(xList,yList,s=.1);plt.axis('equal')
+	plt.scatter(xList,yList,s=.1)
+plt.axis('equal')
 plt.show()
 	# f = open("location.dat", "w")
 	# i = 0
