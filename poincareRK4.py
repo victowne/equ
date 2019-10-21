@@ -39,7 +39,7 @@ def rk4o(x, y, z):
 
     return [x,y,z]
 
-#def main():
+
 for i in np.arange(3.1,3.2,0.1):
     yList = []
     xList = []
@@ -48,26 +48,25 @@ for i in np.arange(3.1,3.2,0.1):
     x = i
     y = 0
     z = 0
+    h = .01
     xList.append(x)
     yList.append(y)
     zList.append(z)
-
     t = 1
     changeInTime = h
 
     while changeInTime < 60:
 
-            [x,y,z] = rk4o(xList[t-1], yList[t-1], zList[t-1])
+        [x,y,z] = rk4o(xList[t-1], yList[t-1], zList[t-1])
+        xList.append(x)
+        yList.append(y)
+        zList.append(z)
+        if 1 < changeInTime:
+            if x < xList[t-1] and xList[t-2] < xList[t-1]:
+                break
 
-            xList.append(x)
-            yList.append(y)
-            zList.append(z)
-            if 1 < changeInTime:
-                    if x < xList[t-1] and xList[t-2] < xList[t-1]:
-                            break
-
-            t += 1
-            changeInTime += h
+        t += 1
+        changeInTime += h
     plt.scatter(xList,yList,s=.1)
 plt.axis('equal')
 plt.show()
