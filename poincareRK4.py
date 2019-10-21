@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from reqdsk import funcbr,funcbz
+from reqdsk import Raxis,Zaxis,Rmin,Rboxlen,bdr
 
 h = .01
 
@@ -39,37 +41,36 @@ def rk4o(x, y, z):
 
     return [x,y,z]
 
-
-for i in np.arange(3.1,3.2,0.1):
-    yList = []
-    xList = []
-    zList = []
-    #start point
-    x = i
-    y = 0
-    z = 0
-    h = .01
-    xList.append(x)
-    yList.append(y)
-    zList.append(z)
-    t = 1
-    changeInTime = h
-
-    while changeInTime < 60:
-
-        [x,y,z] = rk4o(xList[t-1], yList[t-1], zList[t-1])
+def main():
+    for i in np.linspace(Raxis,bdr[0]-0.01,10):
+        yList = []
+        xList = []
+        zList = []
+        #start point
+        x = i
+        y = Zaxis
+        z = 0
         xList.append(x)
         yList.append(y)
         zList.append(z)
-        if 1 < changeInTime:
-            if x < xList[t-1] and xList[t-2] < xList[t-1]:
-                break
+        t = 1
+        changeInTime = h
 
-        t += 1
-        changeInTime += h
-    plt.scatter(xList,yList,s=.1)
-plt.axis('equal')
-plt.show()
+        while changeInTime < 60:
+
+            [x,y,z] = rk4o(xList[t-1], yList[t-1], zList[t-1])
+            xList.append(x)
+            yList.append(y)
+            zList.append(z)
+            if 1 < changeInTime:
+                if x < xList[t-1] and xList[t-2] < xList[t-1]:
+                    break
+
+            t += 1
+            changeInTime += h
+        plt.scatter(xList,yList,s=.1)
+    plt.axis('equal')
+    plt.show()
 # f = open("location.dat", "w")
 # i = 0
 # while i < 100:
