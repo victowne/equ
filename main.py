@@ -1,4 +1,5 @@
 import reqdsk
+import poincareRK4
 
 def main():
     reqdsk.main(256,256)
