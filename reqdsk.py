@@ -154,3 +154,25 @@ pin = interp1d(corp,p,kind = 'cubic')
 fin = interp1d(corp,f,kind = 'cubic')
 ff = interp1d(corp,ffprime,kind = 'cubic')
 fp = interp1d(corp,pprime,kind = 'cubic')
+#eqdsk -> hdf5
+eqh5 = h5py.File('equlibrium.hdf5','w')
+eqh5.attrs['B0'] = B0
+eqh5.attrs['current'] = current
+eqh5.attrs['Raxis'] = Raxis
+eqh5.attrs['Zaxis'] = Zaxis
+eqh5['r'] = r
+eqh5['psi_1d'] = corp
+eqh5['psi_norm'] = psi_norm 
+eqh5['f'] = f
+eqh5['p'] = p
+eqh5['q'] = q
+eqh5['ffprime'] = ffprime
+eqh5['pprime'] = pprime
+eqh5['R'] = R
+eqh5['Z'] = Z
+eqh5['psi'] = psi
+eqh5['Br'] = Br
+eqh5['Bz'] = Bz
+eqh5['boundary'] = [bdr,bdz]
+eqh5['limiter'] = [lmr,lmz]
+eqh5.close()
