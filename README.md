@@ -1,8 +1,8 @@
 # equ
-=--------------------------------=  
+=-------------------------------------=  
  Author: Weikang Tang (Vic Towne)    
  Mail: kanger@mail.dlut.edu.cn   
-=--------------------------------=   
+=-------------------------------------=   
   
 libraries required:  
 numpy,h5py,matplotlib
