@@ -41,8 +41,8 @@ def rk4o(x, y, z):
 
     return [x,y,z]
 
-def main():
-    for i in np.linspace(Raxis,bdr[0]-0.01,10):
+def main(nlayer):
+    for i in np.linspace(Raxis,bdr[0]-0.01,nlayer):
         yList = []
         xList = []
         zList = []
