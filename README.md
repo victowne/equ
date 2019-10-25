@@ -3,7 +3,9 @@
  Author: Weikang Tang (Vic Towne)    
  Mail: kanger@mail.dlut.edu.cn   
 =-------------------------------------=   
-  
+ 
+Not the final version still working on it
+
 libraries required:  
 numpy,h5py,matplotlib
 
