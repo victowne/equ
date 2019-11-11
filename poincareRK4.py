@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from reqdsk import funcbr,funcbz
 from reqdsk import Raxis,Zaxis,Rmin,Rboxlen,bdr
 
@@ -42,11 +42,18 @@ def rk4o(x, y, z):
     return [x,y,z]
 
 def main(nlayer):
+    totyList = []
+    totxList = []
+    totzList = []
+    totarclen = []
+    numpts = []
+    arclenlayer = []
     for i in np.linspace(Raxis,bdr[0]-0.01,nlayer):
+        #start point
         yList = []
         xList = []
         zList = []
-        #start point
+        arclen = []
         x = i
         y = Zaxis
         z = 0
@@ -55,25 +62,35 @@ def main(nlayer):
         zList.append(z)
         t = 1
         changeInTime = h
+        #first step
+        [x,y,z] = rk4o(xList[t-1], yList[t-1], zList[t-1])
+        xList.append(x)
+        yList.append(y)
+        zList.append(z)
+        arclen.append(np.sqrt((x-xList[t-1])**2 + (y-yList[t-1])**2))
+        t += 1
+        changeInTime += h
 
         while changeInTime < 60:
 
             [x,y,z] = rk4o(xList[t-1], yList[t-1], zList[t-1])
+            if x < xList[t-1] and xList[t-2] < xList[t-1]:
+                break
             xList.append(x)
             yList.append(y)
             zList.append(z)
-            if 1 < changeInTime:
-                if x < xList[t-1] and xList[t-2] < xList[t-1]:
-                    break
-
+            arclen.append(np.sqrt((x-xList[t-1])**2 + (y-yList[t-1])**2))
             t += 1
             changeInTime += h
-        plt.scatter(xList,yList,s=.1)
-    plt.axis('equal')
-    plt.show()
-# f = open("location.dat", "w")
-# i = 0
-# while i < 100:
-#       f.write(str(xList[i]) + "," + str(yList[i])+ "," + str(zList[i])+"\n")
-#       i = i + 1
-# f.close()
+
+        totxList.extend(xList[0:-1])
+        totyList.extend(yList[0:-1])
+        totzList.extend(zList[0:-1])
+        totarclen.extend(arclen[0:-1])
+        arclenlayer.append(sum(arclen[0:-1]))
+        numpts.append(t-1)
+#        plt.scatter(xList[t-3],yList[t-3],marker='x',s=10.)
+#        plt.scatter(xList[t-2],yList[t-2],marker='o',s=10.)
+#        plt.scatter(xList[t-1],yList[t-1],marker='.',s=10.)
+#        plt.show()
+    print()
