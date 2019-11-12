@@ -1,7 +1,9 @@
 import numpy as np
-#import matplotlib.pyplot as plt
-from reqdsk import funcbr,funcbz
+import matplotlib.pyplot as plt
+import matplotlib.tri as tri
+from reqdsk import funcbr,funcbz,funcpsi
 from reqdsk import Raxis,Zaxis,Rmin,Rboxlen,bdr
+from reqdsk import qin
 
 h = .01
 
@@ -48,7 +50,9 @@ def main(nlayer):
     totarclen = []
     numpts = []
     arclenlayer = []
+    print('Ready set go')
     for i in np.linspace(Raxis,bdr[0]-0.01,nlayer):
+        print(i)
         #start point
         yList = []
         xList = []
@@ -91,15 +95,21 @@ def main(nlayer):
         totarclen.append(arclen[0:-1])
         arclenlayer.append(arclen[-2])
         numpts.append(t-1)
-#        plt.scatter(xList[t-3],yList[t-3],marker='x',s=10.)
-#        plt.scatter(xList[t-2],yList[t-2],marker='o',s=10.)
-#        plt.scatter(xList[t-1],yList[t-1],marker='.',s=10.)
-#        plt.show()
+    print('find vertex')
     Rvtx = []
     Zvtx = []
     Rvtx.append(Raxis)
     Zvtx.append(Zaxis)
     for i in range(1,nlayer):
+        print(i)
         dl = arclenlayer[i]/(4*i)
         for j in range(0,4*i):
-           min(totarclen[i]-j*dl) de xia biao 
+            temp = list(abs(totarclen[i]-j*dl))
+            indexmin = temp.index(min(temp))
+            Rvtx.append(totxList[i][indexmin])
+            Zvtx.append(totyList[i][indexmin])
+    triang = tri.Triangulation(Rvtx,Zvtx)
+    plt.triplot(triang)
+#    plt.tricontourf(triang,qin(funcpsi(Rvtx,Zvtx)))
+    plt.axis('equal')
+    plt.show()
