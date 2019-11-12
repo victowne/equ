@@ -83,14 +83,21 @@ def main(nlayer):
             t += 1
             changeInTime += h
 
-        totxList.extend(xList[0:-1])
-        totyList.extend(yList[0:-1])
-        totzList.extend(zList[0:-1])
-        totarclen.extend(arclen[0:-1])
+        totxList.append(xList[0:-1])
+        totyList.append(yList[0:-1])
+        totzList.append(zList[0:-1])
+        totarclen.append(arclen[0:-1])
         arclenlayer.append(sum(arclen[0:-1]))
         numpts.append(t-1)
 #        plt.scatter(xList[t-3],yList[t-3],marker='x',s=10.)
 #        plt.scatter(xList[t-2],yList[t-2],marker='o',s=10.)
 #        plt.scatter(xList[t-1],yList[t-1],marker='.',s=10.)
 #        plt.show()
-    print()
+    Rvtx = []
+    Zvtx = []
+    Rvtx.append(Raxis)
+    Zvtx.append(Zaxis)
+    for i in range(1,nlayer):
+        dl = arclenlayer[i]/(4*i)
+        for j in range(0,4*i):
+           min(totarclen[i]-j*dl) de xia biao 
