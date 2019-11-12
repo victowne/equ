@@ -41,7 +41,7 @@ def rk4o(x, y, z):
     y = y + k1y/6.0 + k2y/3.0 + k3y/3.0 + k4y/6.0
     z = z + k1z/6.0 + k2z/3.0 + k3z/3.0 + k4z/6.0
 
-    return [x,y,z]
+    return [float(x),float(y),float(z)]
 
 def main(nlayer):
     totyList = []
