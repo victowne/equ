@@ -67,9 +67,10 @@ def main(nlayer):
         xList.append(x)
         yList.append(y)
         zList.append(z)
-        arclen.append(np.sqrt((x-xList[t-1])**2 + (y-yList[t-1])**2))
-        t += 1
-        changeInTime += h
+        temparclen = ((x-xList[t-1])**2 + (y-yList[t-1])**2)**.5
+        arclen.append(temparclen)
+        t = t + 1
+        changeInTime = changeInTime + h
 
         while changeInTime < 60:
 
@@ -79,15 +80,16 @@ def main(nlayer):
             xList.append(x)
             yList.append(y)
             zList.append(z)
-            arclen.append(np.sqrt((x-xList[t-1])**2 + (y-yList[t-1])**2))
-            t += 1
-            changeInTime += h
+            temparclen = temparclen + ((x-xList[t-1])**2 + (y-yList[t-1])**2)**.5
+            arclen.append(temparclen)
+            t = t + 1
+            changeInTime = changeInTime + h
 
         totxList.append(xList[0:-1])
         totyList.append(yList[0:-1])
         totzList.append(zList[0:-1])
         totarclen.append(arclen[0:-1])
-        arclenlayer.append(sum(arclen[0:-1]))
+        arclenlayer.append(arclen[-2])
         numpts.append(t-1)
 #        plt.scatter(xList[t-3],yList[t-3],marker='x',s=10.)
 #        plt.scatter(xList[t-2],yList[t-2],marker='o',s=10.)
