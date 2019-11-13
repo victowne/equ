@@ -1,9 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
+import h5py
+from scipy.spatial import Delaunay
 from reqdsk import funcbr,funcbz,funcpsi
-from reqdsk import Raxis,Zaxis,Rmin,Rboxlen,bdr
-from reqdsk import qin
+from reqdsk import Raxis,Zaxis,Rmin,Rboxlen,bdr,Psi_axis,Psi_bound
+from reqdsk import qin,pin,fin,ff,fp
 
 h = .01
 
@@ -51,7 +53,7 @@ def main(nlayer):
     numpts = []
     arclenlayer = []
     print('Ready set go')
-    for i in np.linspace(Raxis,bdr[0]-0.01,nlayer):
+    for i in np.linspace(Raxis,bdr[0],nlayer):
         print(i)
         #start point
         yList = []
@@ -76,7 +78,7 @@ def main(nlayer):
         t = t + 1
         changeInTime = changeInTime + h
 
-        while changeInTime < 60:
+        while changeInTime < 666:
 
             [x,y,z] = rk4o(xList[t-1], yList[t-1], zList[t-1])
             if x < xList[t-1] and xList[t-2] < xList[t-1]:
@@ -108,8 +110,52 @@ def main(nlayer):
             indexmin = temp.index(min(temp))
             Rvtx.append(totxList[i][indexmin])
             Zvtx.append(totyList[i][indexmin])
-    triang = tri.Triangulation(Rvtx,Zvtx)
-    plt.triplot(triang)
-#    plt.tricontourf(triang,qin(funcpsi(Rvtx,Zvtx)))
+    psivtx = []
+    qvtx = []
+    pvtx = []
+    fvtx = []
+    Btvtx = []
+    Jtvtx = []
+    for i in range(0,len(Rvtx)):
+        temp = float(funcpsi(Rvtx[i],Zvtx[i]))
+        if temp > Psi_bound:
+            psivtx.append(Psi_bound)
+        elif temp < Psi_axis:
+            psivtx.append(Psi_axis)
+        else:
+            psivtx.append(temp)
+    for i in range(0,len(Rvtx)):
+        qvtx.append(float(qin(psivtx[i])))
+        pvtx.append(float(pin(psivtx[i])))
+        fvtx.append(float(fin(psivtx[i])))
+        Btvtx.append(float(fin(psivtx[i])/Rvtx[i]))
+        Jtvtx.append(float(Rvtx[i]*fp(psivtx[i]) + ff(psivtx[i])/(Rvtx[i]*4e-7*np.pi)))
+    
+    vtxh5 = h5py.File('equonvtx.hdf5','w')
+    vtxh5['R'] = Rvtx
+    vtxh5['Z'] = Zvtx
+    vtxh5['psi'] = psivtx
+    vtxh5['q'] = qvtx
+    vtxh5['p'] = pvtx
+    vtxh5['f'] = fvtx
+    vtxh5['Bt'] = Btvtx
+    vtxh5['Jt'] = Jtvtx
+    vtxh5.close()
+    Rvtx = np.array(Rvtx)
+    Zvtx = np.array(Zvtx)
+    points = np.vstack((Rvtx,Zvtx)).T
+    tri = Delaunay(points)
+    meshh5 = h5py.File('mesh.hdf5','w')
+    meshh5['points'] = tri.points
+    meshh5['triangles'] = tri.simplices
+    meshh5['neighbors'] = tri.neighbors
+    meshh5.close()
+    plt.triplot(Rvtx,Zvtx,tri.simplices.copy())
+    plt.plot(Rvtx,Zvtx,'o')
     plt.axis('equal')
     plt.show()
+#    triang = tri.Triangulation(Rvtx,Zvtx)
+#    plt.tricontourf(triang,Jtvtx,200)
+#    plt.triplot(triang)
+#    plt.axis('equal')
+#    plt.show()

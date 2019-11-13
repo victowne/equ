@@ -144,8 +144,8 @@ lmz = pts[nbdr:nbdr+nlmt,1]
 #start_interpolation
 dR = R[1]-R[0]
 dZ = Z[1]-Z[0]
-Br =  parz(psi,dR,dZ)/R
-Bz = -parr(psi,dR,dZ)
+Br =  parz(psi,dZ,dR)/R
+Bz = -parr(psi,dZ,dR)/R
 funcpsi = interpolate.RectBivariateSpline(R,Z,psi.T)
 funcbr = interpolate.RectBivariateSpline(R,Z,Br.T)
 funcbz = interpolate.RectBivariateSpline(R,Z,Bz.T)
