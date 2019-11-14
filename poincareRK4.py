@@ -103,13 +103,14 @@ def main(nlayer):
     Rvtx.append(Raxis)
     Zvtx.append(Zaxis)
     for i in range(1,nlayer):
-        print(i)
+        print(i+1)
         dl = arclenlayer[i]/(4*i)
         for j in range(0,4*i):
             temp = list(abs(totarclen[i]-j*dl))
             indexmin = temp.index(min(temp))
             Rvtx.append(totxList[i][indexmin])
             Zvtx.append(totyList[i][indexmin])
+    print('start interpolation')
     psivtx = []
     qvtx = []
     pvtx = []
@@ -130,7 +131,7 @@ def main(nlayer):
         fvtx.append(float(fin(psivtx[i])))
         Btvtx.append(float(fin(psivtx[i])/Rvtx[i]))
         Jtvtx.append(float(Rvtx[i]*fp(psivtx[i]) + ff(psivtx[i])/(Rvtx[i]*4e-7*np.pi)))
-    
+    print('output')
     vtxh5 = h5py.File('equonvtx.hdf5','w')
     vtxh5['R'] = Rvtx
     vtxh5['Z'] = Zvtx
@@ -154,8 +155,3 @@ def main(nlayer):
     plt.plot(Rvtx,Zvtx,'o')
     plt.axis('equal')
     plt.show()
-#    triang = tri.Triangulation(Rvtx,Zvtx)
-#    plt.tricontourf(triang,Jtvtx,200)
-#    plt.triplot(triang)
-#    plt.axis('equal')
-#    plt.show()
