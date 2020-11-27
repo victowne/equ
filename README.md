@@ -13,6 +13,6 @@ reqdsk.py -> read geqdsk file format & interpolation
 poincareRK4.py -> equlibrium magnetic field & creat triangle mesh  
 
 Some examples:
-![Bphi](github.com/victowne/equ/blob/master/picture/Bphi.png)
+![Bphi](/picture/Bphi.png)
 ![poincare plot of the equilibrium magnetic field lines](github.com/victowne/equ/blob/master/picture/pc.png)
 ![triagnle mesh based on the magnetic flux](github.com/victowne/equ/blob/master/picture/mesh.png)
