@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import h5py
 from scipy import interpolate
 from numpy import gradient as grad
 from scipy.interpolate import interp1d
-import h5py
+from scipy.integrate import cumtrapz
 
 def parr(f,dR,dZ):
     return grad(f,dR,dZ,edge_order = 2)[1]
@@ -46,9 +47,6 @@ Z = np.ones(nz)
 for i in range(0,nr):
     R[i] = Rmin + Rboxlen*i/(nr-1)
     Z[i] = Z0 - Zboxlen*0.5+Zboxlen*i/(nz-1)
-psi_norm = corp - corp[0]
-psi_norm = psi_norm/psi_norm[nr-1]
-r = np.sqrt(psi_norm)
 #read f
 x = []
 n = 5
@@ -154,6 +152,11 @@ pin = interp1d(corp,p,kind = 'cubic')
 fin = interp1d(corp,f,kind = 'cubic')
 ff = interp1d(corp,ffprime,kind = 'cubic')
 fp = interp1d(corp,pprime,kind = 'cubic')
+psi_p = np.linspace(0,1,nr)
+psit = cumtrapz(q,psi_p,initial=0)
+psi_norm = psit - min(psit)
+psi_norm = psi_norm/psi_norm[nr-1]
+r = np.sqrt(psi_norm)
 #eqdsk -> hdf5
 eqh5 = h5py.File('equlibrium.hdf5','w')
 eqh5.attrs['B0'] = B0
