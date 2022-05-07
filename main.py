@@ -13,12 +13,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import sys
 import reqdsk
-import poincareRK4
-
-def main():
-#    reqdsk
-    poincareRK4.main(11)
+#import poincareRK4
 
 if __name__ == '__main__':
-    main()
+    g=reqdsk.gfile(sys.argv[1])
+    g.g2h5()
+    print(g.r)
