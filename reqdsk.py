@@ -31,7 +31,7 @@ def parz(f,dR,dZ):
 def not_empty(s):
     return s and s.strip()
 
-class gfile:
+class Gfile:
 
     def __init__(self,filename):
         try:
@@ -210,5 +210,11 @@ class gfile:
         eqh5['limiter'] = [self.lmr,self.lmz]
         eqh5.close()
 
+    def pltpsi(self):
+        plt.contour(self.R,self.Z,self.psi,20)
+        plt.scatter(self.bdr,self.bdz)
+        plt.axis('equal')
+        plt.show()
+
 if __name__ == '__main__':
-    gfile(sys.argv[1]).g2h5
+    Gfile(sys.argv[1]).g2h5

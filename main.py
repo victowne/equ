@@ -15,9 +15,11 @@
 '''
 import sys
 import reqdsk
-#import poincareRK4
+import poincareRK4
 
 if __name__ == '__main__':
-    g=reqdsk.gfile(sys.argv[1])
-    g.g2h5()
-    print(g.r)
+    gf=reqdsk.Gfile(sys.argv[1])
+    gf.g2h5()
+    ms=poincareRK4.Mesh(gf.Raxis, gf.Zaxis, 0.99*max(gf.bdr), int(sys.argv[2]), gf.funcbr, gf.funcbz)
+    ms.crt()
+    ms.itp(gf.Psi_bound, gf.Psi_axis, gf.funcpsi, gf.qin, gf.pin, gf.fin, gf.ff, gf.fp)
