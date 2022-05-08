@@ -12,6 +12,9 @@ numpy,h5py,matplotlib,scipy
 reqdsk.py -> read geqdsk file format & interpolation  
 poincareRK4.py -> equlibrium magnetic field & creat triangle mesh  
 
+try:  
+python main.py gfilename nlayers  
+
 Some examples:  
 ![Bphi](/picture/Bphi.png)  
 Fig 1. contour plot of equilibrium toroidal magnetic field  
