@@ -1,7 +1,7 @@
 # equ
 =-------------------------------------=  
- Author: Weikang Tang (Vic Towne)    
- Mail: wtang@ipp.mpg.de   
+ Author: Weikang Tang     
+ Mail: weikang.tang@ipp.mpg.de   
 =-------------------------------------=   
 
 compatible with Python 3.7 
