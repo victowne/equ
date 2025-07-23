@@ -71,6 +71,7 @@ class Gfile:
         Z = np.ones(nz)
         for i in range(0,nr):
             R[i] = self.Rmin + self.Rboxlen*i/(nr-1)
+        for i in range(0,nz):
             Z[i] = self.Z0 - self.Zboxlen*0.5+self.Zboxlen*i/(nz-1)
         self.R = R
         self.Z = Z
@@ -130,7 +131,7 @@ class Gfile:
             x.append(line[48:64])
             x.append(line[64:80])
         x = list(filter(not_empty,x))
-        self.psi = np.zeros((nr,nz))
+        self.psi = np.zeros((nz,nr))
         ntest = 0
         for i in range(0,nz):
             for j in range(0,nr):
@@ -170,8 +171,8 @@ class Gfile:
         #start_interpolation
         dR = R[1]-R[0]
         dZ = Z[1]-Z[0]
-        self.Br =  parz(self.psi,dZ,dR)/R
-        self.Bz = -parr(self.psi,dZ,dR)/R
+        self.Br =  parz(self.psi,dZ,dR)/(R+0.00001)
+        self.Bz = -parr(self.psi,dZ,dR)/(R+0.00001)
         self.funcpsi = interpolate.RectBivariateSpline(R,Z,self.psi.T)
         self.funcbr = interpolate.RectBivariateSpline(R,Z,self.Br.T)
         self.funcbz = interpolate.RectBivariateSpline(R,Z,self.Bz.T)
@@ -211,9 +212,24 @@ class Gfile:
         eqh5.close()
 
     def pltpsi(self):
-        plt.contour(self.R,self.Z,self.psi,20)
-        plt.scatter(self.bdr,self.bdz)
+        plt.contourf(self.R,self.Z,self.psi,50)
+        #plt.contour(self.R,self.Z,self.psi,20)
+        plt.scatter(self.bdr,self.bdz,s=.5)
         plt.axis('equal')
+        plt.show()
+
+    def pltB(self):
+        plt.contourf(self.R,self.Z,self.Br,20)
+        plt.axis('equal')
+        plt.figure()
+        plt.contourf(self.R,self.Z,self.Bz,20)
+        plt.axis('equal')
+        plt.show()
+    
+    def pltf(self):
+        plt.plot(self.psip1d,self.f)
+        plt.figure()
+        plt.plot(self.psip1d,self.ffprime)
         plt.show()
 
 if __name__ == '__main__':
