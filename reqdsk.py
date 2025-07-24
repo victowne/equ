@@ -216,20 +216,37 @@ class Gfile:
         #plt.contour(self.R,self.Z,self.psi,20)
         plt.scatter(self.bdr,self.bdz,s=.5)
         plt.axis('equal')
+        plt.xlabel('R [m]')
+        plt.ylabel('Z [m]')
+        plt.title('psi')
         plt.show()
 
     def pltB(self):
         plt.contourf(self.R,self.Z,self.Br,20)
         plt.axis('equal')
+        plt.xlabel('R [m]')
+        plt.ylabel('Z [m]')
+        plt.title('Br')
         plt.figure()
-        plt.contourf(self.R,self.Z,self.Bz,20)
+        plt.contourf(self.R[50:240],self.Z[40:330],self.Bz[40:330,50:240],20)
         plt.axis('equal')
+        plt.xlabel('R [m]')
+        plt.ylabel('Z [m]')
+        plt.title('Bz')
         plt.show()
     
-    def pltf(self):
+    def pltprof(self):
         plt.plot(self.psip1d,self.f)
+        plt.title('f')
         plt.figure()
         plt.plot(self.psip1d,self.ffprime)
+        plt.title('ffp')
+        plt.figure()
+        plt.plot(self.psip1d,self.q)
+        plt.title('q')
+        plt.figure()
+        plt.plot(self.psip1d,self.p)
+        plt.title('p')
         plt.show()
 
 if __name__ == '__main__':
