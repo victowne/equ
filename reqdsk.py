@@ -196,6 +196,7 @@ class Gfile:
         eqh5.attrs['Raxis'] = self.Raxis
         eqh5.attrs['Zaxis'] = self.Zaxis
         eqh5['r'] = self.r
+        eqh5['psi_t'] = self.r**2
         eqh5['psi_1d'] = self.psip1d
         eqh5['f'] = self.f
         eqh5['p'] = self.p
@@ -212,9 +213,12 @@ class Gfile:
         eqh5.close()
 
     def pltpsi(self):
-        plt.contourf(self.R,self.Z,self.psi,50)
+        fig = plt.figure(figsize=(8,6))
+        ax = fig.add_subplot(1,1,1)
+        cf = ax.contourf(self.R,self.Z,self.psi,50)
         #plt.contour(self.R,self.Z,self.psi,20)
         plt.scatter(self.bdr,self.bdz,s=.5)
+        plt.colorbar(cf, label ='psi a. u.')
         plt.axis('equal')
         plt.xlabel('R [m]')
         plt.ylabel('Z [m]')
@@ -236,16 +240,16 @@ class Gfile:
         plt.show()
     
     def pltprof(self):
-        plt.plot(self.psip1d,self.f)
+        plt.plot(self.r**2,self.f)
         plt.title('f')
         plt.figure()
-        plt.plot(self.psip1d,self.ffprime)
+        plt.plot(self.r**2,self.ffprime)
         plt.title('ffp')
         plt.figure()
-        plt.plot(self.psip1d,self.q)
+        plt.plot(self.r**2,self.q)
         plt.title('q')
         plt.figure()
-        plt.plot(self.psip1d,self.p)
+        plt.plot(self.r**2,self.p)
         plt.title('p')
         plt.show()
 
